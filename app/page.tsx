@@ -7,6 +7,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyin
 import { faSitemap } from "@fortawesome/free-solid-svg-icons/faSitemap";
 import { faWheelchair } from "@fortawesome/free-solid-svg-icons/faWheelchair";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { fetchImages } from "@/actions/fetchImages";
 
 export default function Home() {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
@@ -15,9 +16,11 @@ export default function Home() {
   const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("/api/fetchImages")
-      .then((res) => res.json())
-      .then((data) => setImages(data));
+    const fetchImg = async () => {
+      const result = await fetchImages();
+    setImages(result);
+    };
+    fetchImg();
   }, []);
 
   useEffect(() => {
