@@ -50,13 +50,11 @@ export default function DataContextProvider({
 
   const fetchRenter = async () => {
     const result = await fetchRentersData();
-    console.log("result: ", result);
     setRentersData(result);
   };
 
   const fetchRents = async () => {
     const rentResult = await fetchRentData();
-    console.log("rentResult: ", rentResult);
     setRentData(rentResult);
   };
 
@@ -68,10 +66,6 @@ export default function DataContextProvider({
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log("data: ", data);
-  }, [data]);
 
   return (
     <DataContext.Provider

@@ -16,17 +16,6 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-type rentersData = {
-  month: string;
-  amount: number;
-};
-
-type RentDetails = {
-  renterName: string;
-  rentersData: rentersData[];
-  rentAmount: number;
-};
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -38,19 +27,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-const defaultRentDetails: RentDetails[] = [
-  {
-    renterName: "Seema Gandhi",
-    rentersData: [],
-    rentAmount: 1500,
-  },
-  {
-    renterName: "Jitendra Sonkar",
-    rentersData: [],
-    rentAmount: 2500,
-  },
-];
 
 export default function Rent() {
   const { rentersData, rentData, fetchRents, fetchRenter } = useDataContext();
@@ -67,13 +43,10 @@ export default function Rent() {
   }
 
   async function handleAddRentSubmit(formData: FormData) {
-    console.log("formData: ", formData);
     const result = await addRentData(formData);
     setMessages(result.message);
     await fetchRents();
   }
-
-  //   const handleAddRent = (renter_id, amount) => {};
 
   const calculateRent = (renterId, type) => {
     let amount = 0;
@@ -94,39 +67,34 @@ export default function Rent() {
     return amount;
   };
 
-  useEffect(() => {
-    const start = new Date("2024-05-01");
-    const today = new Date();
-    for (let d = new Date(start); d <= today; d.setMonth(d.getMonth() + 1)) {
-      console.log(
-        new Intl.DateTimeFormat("en-US", {
-          year: "numeric",
-          month: "long",
-        }).format(d)
-      );
-    }
-  }, []);
-
   return (
     <>
-      <div className="flex p-4 justify-evenly">
+      <div className="flex p-4 justify-end">
         <Button className="" variant="contained" onClick={handleOpen}>
-          Add Renter
+          + Add Renter
         </Button>
       </div>
       <div className="w-full p-2">
         {" "}
         {rentersData &&
           rentersData.map((renter) => (
-            <table className="w-full mb-4 text-center">
-              <tr key={renter.renterName} className="">
-                <th className="border bg-dark text-light" colSpan="3">
-                  <h2 className="text-xl">{renter.renterName} : {renter._id}</h2>
-                </th>
-              </tr>
+            <table
+              className="w-full mb-4 text-center"
+              key={`table_${renter.renterName}`}
+            >
+              <thead>
+                <tr key={renter.renterName} className="">
+                  <th className="border bg-dark text-light" colSpan="3">
+                    <h2 className="text-2xl">
+                      {renter.renterName} : {renter._id}
+                    </h2>
+                  </th>
+                </tr>
+              </thead>
+
               {rentData && (
-                <>
-                  <tr>
+                <tbody>
+                  <tr className="bg-gray text-xl">
                     <th className="border">Month</th>
                     <th className="border">Amount</th>
                     <th className="border">IsPaid</th>
@@ -143,49 +111,56 @@ export default function Rent() {
                         </tr>
                       )
                   )}
-                </>
+                </tbody>
               )}
-              <tr>
-                <th className="border">
-                  Amount Paid: {calculateRent(renter._id, "amount-paid")}
-                </th>
-                <th></th>
-                <th className="border">
-                  Amount Pending: {calculateRent(renter._id, "amount-pending")}
-                </th>
-              </tr>
-              <tr>
-                <th className="border" colSpan="3">
-                  <form
-                    className="flex justify-evenly item-center py-4"
-                    action={handleAddRentSubmit}
-                  >
-                    <input
-                      type="text"
-                      name="rentMonth"
-                      placeholder="Rent Month"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="rentAmount"
-                      placeholder="Rent Amount"
-                      required
-                    />
-                    <div className="flex items-center">
-                      <input type="checkbox" name="isRentPaid" />
-                      <label htmlFor="isRentPaid">isRentPaid</label>
-                    </div>
-                    <input type="hidden" name="renterId" value={renter._id} />
-                    <button
-                      type="submit"
-                      className="bg-dark text-light p-2 rounded-lg"
+              <tfoot>
+                <tr>
+                  <th className="border">
+                    Amount Paid: {calculateRent(renter._id, "amount-paid")}
+                  </th>
+                  <th></th>
+                  <th className="border">
+                    Amount Pending:{" "}
+                    {calculateRent(renter._id, "amount-pending")}
+                  </th>
+                </tr>
+                <tr>
+                  <th className="bg-gray/30 border" colSpan="3">
+                    <form
+                      className="flex justify-evenly item-center py-4"
+                      action={handleAddRentSubmit}
                     >
-                      Add Rent
-                    </button>
-                  </form>
-                </th>
-              </tr>
+                      <input
+                        className="border border-dark/30 rounded-lg p-2"
+                        type="text"
+                        name="rentMonth"
+                        placeholder="Rent Month"
+                        required
+                      />
+                      <input
+                        className="border border-dark/30 rounded-lg p-2"
+                        type="text"
+                        name="rentAmount"
+                        placeholder="Rent Amount"
+                        required
+                      />
+                      <div className="flex items-center">
+                        <input type="checkbox" name="isRentPaid" />
+                        <label className="ml-2" htmlFor="isRentPaid">
+                          isRentPaid
+                        </label>
+                      </div>
+                      <input type="hidden" name="renterId" value={renter._id} />
+                      <button
+                        type="submit"
+                        className="bg-dark text-light p-2 rounded-lg"
+                      >
+                        Add Rent
+                      </button>
+                    </form>
+                  </th>
+                </tr>
+              </tfoot>
             </table>
           ))}
       </div>

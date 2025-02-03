@@ -15,7 +15,6 @@ export async function addRentersDetails(formData: FormData) {
     const result = await collection.insertOne({
       renterName,
       rentAmount,
-      rentersData: [],
       createdAt: new Date(),
     });
     return { success: true, message: "Renter added successfully!" };

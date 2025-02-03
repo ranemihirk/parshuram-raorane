@@ -15,7 +15,13 @@ export async function fetchRentersData() {
     const collection = db.collection("renters");
 
     const data = await collection.find({}).toArray();
-    return data;
+
+    return data.map((rent) => ({
+      _id: rent._id.toString(), // Fix ObjectId
+      renterName: rent.renterName,
+      rentAmount: rent.rentAmount,
+      createdAt: rent.createdAt.toISOString(), // Fix Date
+    }));
   } catch (error) {
     console.error("Error inserting Renter:", error);
     return { success: false, message: "Failed to add Renter." };
