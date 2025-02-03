@@ -50,7 +50,7 @@ export default function Home() {
         </div>
         {/* Renovated House Images */}
         <h1 className="text-4xl font-black text-center mb-4">Renovated</h1>
-        <div className="flex flex-wrap w-full lg:h-[450px] lg:flex-nowrap gap-2 mb-4">
+        <div className="flex flex-wrap w-full lg:h-[50vh] lg:flex-nowrap gap-2 mb-4">
           <motion.div
             onMouseEnter={() => setHoveredIndex("new-left")}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -117,7 +117,7 @@ export default function Home() {
         </div>
         {/* Old House Images */}
         <h1 className="text-4xl font-black text-center mb-4">Old</h1>
-        <div className="flex flex-wrap w-full lg:h-[450px] lg:flex-nowrap gap-2 mb-4">
+        <div className="flex flex-wrap w-full lg:h-[50vh] lg:flex-nowrap gap-2 mb-4">
           <motion.div
             onMouseEnter={() => setHoveredIndex("old-left")}
             onMouseLeave={() => setHoveredIndex(null)}

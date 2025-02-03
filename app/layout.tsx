@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 // import localFont from "next/font/local";
 import "./../styles/globals.css";
+import DataContextProvider from "@/contexts/DataContext";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -31,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <body className="text-[14px]">
-        {children}
+        <DataContextProvider>{children}</DataContextProvider>
       </body>
     </html>
   );
