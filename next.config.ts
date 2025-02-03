@@ -8,8 +8,8 @@ const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
   // output: isProd ? "export" : undefined,
-  basePath: isProd ? "/parshuram-raorane" : "",
-  assetPrefix: isProd ? "/parshuram-raorane" : "",
+  // basePath: isProd ? "/parshuram-raorane" : "",
+  // assetPrefix: isProd ? "/parshuram-raorane" : "",
   reactStrictMode: true,
   typescript: {
     // !! WARN !!
