@@ -1,11 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import "@/style.css";
-import { motion, useInView } from "motion/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
-import { faSitemap } from "@fortawesome/free-solid-svg-icons/faSitemap";
-import { faWheelchair } from "@fortawesome/free-solid-svg-icons/faWheelchair";
+import { motion } from "motion/react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { fetchImages } from "@/actions/fetchImages";
 
@@ -18,42 +14,42 @@ export default function Home() {
   useEffect(() => {
     const fetchImg = async () => {
       const result = await fetchImages();
-    setImages(result);
+      setImages(result);
     };
     fetchImg();
   }, []);
 
-  useEffect(() => {
-    console.log("hoveredIndex: ", hoveredIndex);
-  }, [hoveredIndex]);
   return (
-    <>
-      <header className="p-4 mb-4">
-        <div className="bg-gray text-dark shadow-md shadow-dark/30 rounded-full px-8 py-4 delay-300 transition-all">
+    <Suspense fallback={<div>Loading...</div>}>
+      <header className="border bg-gray p-4 mb-4">
+        {/* <div className="bg-gray text-dark shadow-md shadow-dark/30 rounded-full px-8 py-4 delay-300 transition-all">
           <h1 className="text-4xl font-black cursor-pointer text-center">
             Parshuram Raorane
           </h1>
-        </div>
+        </div> */}
       </header>
       <main className="">
-        {/* All Images in folder */}
-        <div
-          className={`${
-            process.env.NODE_ENV === "production" && "hidden"
-          } container flex flex-wrap justify-center gap-4 mb-4`}
-        >
-          {images.map((src, index) => (
-            <img
-              key={index}
-              src={src}
-              alt={`Image ${index}`}
-              className="w-1/5 h-auto rounded-lg shadow-md"
-            />
-          ))}
+        <div className="">
+          <div className="flex justify-evenly lg:justify-between text-3xl lg:text-[7rem] leading-[0.7]">
+            <h1 className="uppercase font-black text-center text-inherit">
+              Parshuram
+            </h1>
+            <h1 className="uppercase font-black text-center text-inherit">
+              Raorane
+            </h1>
+          </div>
+          <img
+            src="/assets/images/house/IMG_20230206_182527043 (1).jpg"
+            alt="HomeImage"
+            className="hidden h-[70vh] w-full object-center object-cover"
+          />
         </div>
+
         {/* Renovated House Images */}
-        <h1 className="text-4xl font-black text-center mb-4">Renovated</h1>
-        <div className="flex flex-wrap w-full lg:h-[50vh] lg:flex-nowrap gap-2 mb-4">
+        <h1 className="hidden text-4xl font-black text-center mb-4">
+          Renovated
+        </h1>
+        <div className="flex flex-wrap w-full lg:h-screen lg:flex-nowrap mb-4">
           <motion.div
             onMouseEnter={() => setHoveredIndex("new-left")}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -67,7 +63,7 @@ export default function Home() {
                 : "100%", // Expand hovered image
             }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="h-full rounded-lg overflow-hidden shadow-lg cursor-pointer"
+            className="relative h-full rounded-lg overflow-hidden shadow-lg cursor-pointer"
           >
             <img
               className="size-full object-cover rounded-lg shadow-md"
@@ -118,9 +114,10 @@ export default function Home() {
             />
           </motion.div>
         </div>
+
         {/* Old House Images */}
-        <h1 className="text-4xl font-black text-center mb-4">Old</h1>
-        <div className="flex flex-wrap w-full lg:h-[50vh] lg:flex-nowrap gap-2 mb-4">
+        <h1 className="hidden text-4xl font-black text-center mb-4">Old</h1>
+        <div className="flex flex-wrap w-full lg:h-screen lg:flex-nowrap mb-4">
           <motion.div
             onMouseEnter={() => setHoveredIndex("old-left")}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -185,7 +182,19 @@ export default function Home() {
             />
           </motion.div>
         </div>
+
+        {/* All Images in folder */}
+        <div className="lg:container flex flex-wrap justify-center lg:gap-4 mb-4">
+          {images.map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt={`Image ${index}`}
+              className="w-1/4 lg:w-1/5 h-auto rounded-lg shadow-md"
+            />
+          ))}
+        </div>
       </main>
-    </>
+    </Suspense>
   );
 }
