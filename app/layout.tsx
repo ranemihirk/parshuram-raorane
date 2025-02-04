@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 // import localFont from "next/font/local";
 import "./../styles/globals.css";
+import DefaultContextProvider from "@/contexts/DefaultContext";
 import DataContextProvider from "@/contexts/DataContext";
 
 // const geistSans = localFont({
@@ -31,8 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className="text-[14px]">
-        <DataContextProvider>{children}</DataContextProvider>
+      <body className="text-[14px] py-10">
+        <DefaultContextProvider>
+          <DataContextProvider>{children}</DataContextProvider>
+        </DefaultContextProvider>
       </body>
     </html>
   );
