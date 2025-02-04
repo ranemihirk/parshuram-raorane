@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   // basePath: isProd ? "/parshuram-raorane" : "",
   // assetPrefix: isProd ? "/parshuram-raorane" : "",
   reactStrictMode: true,
+  productionBrowserSourceMaps: true, // Enables logs in production
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

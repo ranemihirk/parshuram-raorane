@@ -106,14 +106,22 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    const fetchImg = async () => {
-      const result = await fetchImages();
-      console.log('result: ', result);
-      if(result.status == 'success'){
-        setImages(result.files);
-      }
-    };
-    fetchImg();
+    const isProd = process.env.NODE_ENV === "production";
+
+    if (isProd) {
+      fetch("/api/fetchImages")
+        .then((res) => res.json())
+        .then((data) => setImages(data))
+        .catch((err) => console.error("Error loading images", err));
+    } else {
+      const fetchImg = async () => {
+        const result = await fetchImages();
+        if (result.status == "success") {
+          setImages(result.files);
+        }
+      };
+      fetchImg();
+    }
   }, []);
 
   return (
