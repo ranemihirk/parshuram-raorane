@@ -109,7 +109,9 @@ export default function Home() {
     const fetchImg = async () => {
       const result = await fetchImages();
       console.log('result: ', result);
-      setImages(result);
+      if(result.status == 'success'){
+        setImages(result.files);
+      }
     };
     fetchImg();
   }, []);
