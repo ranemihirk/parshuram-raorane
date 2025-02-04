@@ -1,13 +1,6 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useState, Suspense } from "react";
 import "@/style.css";
-import { motion, useInView } from "motion/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
-import { faSitemap } from "@fortawesome/free-solid-svg-icons/faSitemap";
-import { faWheelchair } from "@fortawesome/free-solid-svg-icons/faWheelchair";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { table } from "console";
 import { addRentData } from "@/actions/addRentData";
 import { addRentersDetails } from "@/actions/addRentersDetails";
 import { useDataContext } from "@/contexts/DataContext";
@@ -68,7 +61,7 @@ export default function Rent() {
   };
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex p-4 justify-end">
         <Button className="" variant="contained" onClick={handleOpen}>
           + Add Renter
@@ -191,12 +184,6 @@ export default function Rent() {
           </form>
         </Box>
       </Modal>
-      {/* <div>
-        <div>
-          
-          {messages && <p>{messages}</p>}
-        </div>
-      </div> */}
-    </>
+    </Suspense>
   );
 }
