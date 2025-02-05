@@ -129,7 +129,7 @@ export default function Home() {
       <header className="hidden border bg-gray p-4 mb-4"></header>
       <main className="">
         <div className="">
-          <div className="flex justify-evenly lg:justify-between text-3xl lg:text-[8vw] leading-[0.7]">
+          <div className="flex justify-between text-[8vw] leading-[0.7]">
             <h1 className="uppercase font-black text-center text-inherit">
               Parshuram
             </h1>
@@ -163,7 +163,7 @@ export default function Home() {
               key={index}
               src={src}
               alt={`Image ${index}`}
-              className="w-1/4 lg:w-1/5 h-auto object-contain rounded-lg shadow-md"
+              className="w-1/2 lg:w-1/4 h-auto object-contain rounded-lg shadow-md"
             />
           ))}
         </div>

@@ -11,7 +11,7 @@ export default function ImageGroupComponent(props) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <h1
-        className={`${imageGroupTitle == 'Renovate House Front' && 'hidden'} text-4xl font-black text-center mb-4`}
+        className={`${imageGroupTitle == 'Renovate House Front' && 'hidden'} text-xl lg:text-4xl font-black text-center mb-4`}
         key={`title_${imageGroupKey}`}
       >
         {imageGroupTitle}
