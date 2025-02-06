@@ -1,7 +1,9 @@
 "use client";
+import dynamic from 'next/dynamic';
 import { useState, Suspense } from "react";
 import "@/style.css";
-import ImageComponent from "@/components/ImageComponent";
+const ImageComponent = dynamic(() => import('@/components/ImageComponent'), { ssr: false });
+// import ImageComponent from "@/components/ImageComponent";
 
 export default function ImageGroupComponent(props) {
   const { images, imageGroupTitle, imageGroupKey } = props;

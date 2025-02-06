@@ -1,10 +1,12 @@
 "use client";
+import dynamic from 'next/dynamic';
 import { useEffect, useState, Suspense } from "react";
 import "@/style.css";
 import Image from "next/image";
 import { useDefaultContext } from "@/contexts/DefaultContext";
 import { fetchImages } from "@/actions/fetchImages";
-import ImageGroupComponent from "@/components/ImageGroupComponent";
+const ImageGroupComponent = dynamic(() => import('@/components/ImageGroupComponent'), { ssr: false });
+// import ImageGroupComponent from "@/components/ImageGroupComponent";
 
 export default function Home() {
   const { isLargeScreen } = useDefaultContext();
