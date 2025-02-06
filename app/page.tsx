@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState, Suspense } from "react";
 import "@/style.css";
+import Image from "next/image";
 import { useDefaultContext } from "@/contexts/DefaultContext";
-import { motion } from "motion/react";
 import { fetchImages } from "@/actions/fetchImages";
 import ImageGroupComponent from "@/components/ImageGroupComponent";
 
@@ -159,12 +159,22 @@ export default function Home() {
         {/* All Images in folder */}
         <div className="lg:container flex flex-wrap justify-center lg:gap-4 mb-4">
           {images.map((src, index) => (
-            <img
+            <div className="w-1/2 lg:w-1/4 h-auto object-contain rounded-lg shadow-md">
+              {/* <img
               key={index}
               src={src}
               alt={`Image ${index}`}
               className="w-1/2 lg:w-1/4 h-auto object-contain rounded-lg shadow-md"
-            />
+            /> */}
+              <Image
+                className="size-full object-cover rounded-lg shadow-md"
+                key={`img_${index}`}
+                src={src}
+                alt={`Image ${index}`}
+                width={2000}
+                height={2000}
+              />
+            </div>
           ))}
         </div>
       </main>

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback, Suspense } from "react";
 import "@/style.css";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { useDefaultContext } from "@/contexts/DefaultContext";
 
@@ -48,11 +49,18 @@ export default function ImageComponent(props) {
         transition={{ duration: 0.5, ease: "easeInOut" }}
         className="relative h-full rounded-lg overflow-hidden shadow-lg cursor-pointer"
       >
-        <img
+        <Image
           className="size-full object-cover rounded-lg shadow-md"
           src={image.imageSrc}
           alt="Home Left"
+          width={2000}
+          height={2000}
         />
+        {/* <img
+          className="size-full object-cover rounded-lg shadow-md"
+          src={image.imageSrc}
+          alt="Home Left"
+        /> */}
       </motion.div>
     </Suspense>
   );
