@@ -1,15 +1,19 @@
 "use client";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { useEffect, useState, Suspense } from "react";
 import "@/style.css";
 import Image from "next/image";
 import { useDefaultContext } from "@/contexts/DefaultContext";
 import { fetchImages } from "@/actions/fetchImages";
-const ImageGroupComponent = dynamic(() => import('@/components/ImageGroupComponent'), { ssr: false });
-// import ImageGroupComponent from "@/components/ImageGroupComponent";
+const ImageGroupComponent = dynamic(
+  () => import("@/components/ImageGroupComponent"),
+  { ssr: false }
+);
+import Switch from "@mui/material/Switch";
 
 export default function Home() {
-  const { isLargeScreen } = useDefaultContext();
+  const { isLargeScreen, clicks, setClicks, imageLayout, setImageLayout } =
+    useDefaultContext();
 
   const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
@@ -131,7 +135,10 @@ export default function Home() {
       <header className="hidden border bg-gray p-4 mb-4"></header>
       <main className="">
         <div className="">
-          <div className="flex justify-between text-[8vw] leading-[0.7]">
+          <div
+            className="flex justify-between text-[8vw] leading-[0.7]"
+            onDoubleClick={() => setClicks(!clicks)}
+          >
             <h1 className="uppercase font-black text-center text-inherit">
               Parshuram
             </h1>
@@ -139,13 +146,19 @@ export default function Home() {
               Raorane
             </h1>
           </div>
+          <div></div>
           <img
             src="/assets/images/house/IMG_20230206_182527043 (1).jpg"
             alt="HomeImage"
             className="hidden h-[70vh] w-full object-center object-cover"
           />
         </div>
-
+        <div className={`${clicks ? "flex" : "hidden"} justify-end`}>
+          <Switch
+            onChange={() => setImageLayout(!imageLayout)}
+            checked={imageLayout}
+          />
+        </div>
         <div>
           {imagesData &&
             imagesData.length > 0 &&

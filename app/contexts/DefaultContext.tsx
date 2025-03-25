@@ -20,6 +20,10 @@ type DefaultContextProviderProps = {
 
 type DefaultContextProp = {
   isLargeScreen: boolean;
+  clicks: boolean;
+  imageLayout: boolean;
+  setClicks: Dispatch<SetStateAction<boolean>>;
+  setImageLayout: Dispatch<SetStateAction<boolean>>;
 };
 
 export const DefaultContext = createContext<DefaultContextProp | null>(null);
@@ -29,10 +33,25 @@ export default function DefaultContextProvider({
 }: DefaultContextProviderProps) {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
+  const [clicks, setClicks] = useState(false);
+  const [imageLayout, setImageLayout] = useState(false);
+
+  useEffect(() => {
+    if (clicks) {
+      setTimeout(() => {
+        setClicks(false);
+      }, 10000);
+    }
+  }, [clicks]);
+
   return (
     <DefaultContext.Provider
       value={{
         isLargeScreen,
+        clicks,
+        imageLayout,
+        setClicks,
+        setImageLayout,
       }}
     >
       {children}

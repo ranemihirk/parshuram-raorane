@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className="text-[14px] py-10">
+      <body className="select-none text-[14px] py-10">
         <DefaultContextProvider>
           <DataContextProvider>{children}</DataContextProvider>
         </DefaultContextProvider>

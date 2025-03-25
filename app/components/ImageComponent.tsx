@@ -1,12 +1,12 @@
 "use client";
-import { useState, useCallback, Suspense } from "react";
+import { useState, useCallback, Suspense, useEffect } from "react";
 import "@/style.css";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { useDefaultContext } from "@/contexts/DefaultContext";
 
 export default function ImageComponent(props) {
-  const { isLargeScreen } = useDefaultContext();
+  const { isLargeScreen, imageLayout } = useDefaultContext();
 
   const { group, groupKey, image, index, numberOfImages, setGroup } = props;
 
@@ -34,10 +34,12 @@ export default function ImageComponent(props) {
         onMouseLeave={handleMouseLeave}
         animate={{
           width: isLargeScreen
-            ? group !== null &&
-              group === groupKey &&
-              hoveredIndex.includes(groupKey) &&
-              hoveredIndex === imageId
+            ? imageLayout
+              ? "100%"
+              : group !== null &&
+                group === groupKey &&
+                hoveredIndex.includes(groupKey) &&
+                hoveredIndex === imageId
               ? "60%"
               : `${
                   group !== null && group === groupKey
@@ -50,7 +52,9 @@ export default function ImageComponent(props) {
         className="relative h-full rounded-lg overflow-hidden shadow-lg cursor-pointer"
       >
         <Image
-          className="size-full object-cover rounded-lg shadow-md"
+          className={`size-full ${
+            imageLayout ? "object-contain" : "object-cover"
+          } rounded-lg shadow-md`}
           src={image.imageSrc}
           alt="Home Left"
           width={2000}
