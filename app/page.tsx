@@ -172,9 +172,13 @@ export default function Home() {
         </div>
 
         {/* All Images in folder */}
-        <div className="lg:container flex flex-wrap justify-center lg:gap-4 mb-4">
+        <div className={`lg:container flex flex-wrap justify-center ${!imageLayout && 'lg:gap-4'} mb-4`}>
           {images.map((src, index) => (
-            <div className="w-1/2 lg:w-1/4 h-auto object-contain rounded-lg shadow-md">
+            <div
+              className={`${
+                imageLayout ? "w-1/2" : "w-1/2 lg:w-1/4"
+              } h-auto object-contain rounded-lg shadow-md`}
+            >
               {/* <img
               key={index}
               src={src}
