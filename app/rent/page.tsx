@@ -1,5 +1,5 @@
 "use client";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import "@/style.css";
 import { addRentData } from "@/actions/addRentData";
 import { addRentersDetails } from "@/actions/addRentersDetails";
@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { modifyRentData } from "@/actions/modifyRentData";
 
 const style = {
   position: "absolute",
@@ -43,22 +44,111 @@ export default function Rent() {
 
   const calculateRent = (renterId, type) => {
     let amount = 0;
-    if (type == "amount-paid") {
-      rentData.map((item) => {
-        if (renterId == item.renterId && item.isRentPaid) {
-          amount = amount + item.rentAmount;
-        }
-      });
+    if (rentData.length > 0) {
+      if (type == "amount-paid") {
+        rentData.map((item) => {
+          console.log('item: ', item);
+          if (renterId == item.renterId) {
+            amount = amount + item.amountPaid;
+          }
+        });
+      }
+      if (type == "amount-pending") {
+        rentData.map((item) => {
+          // console.log("rentData: ", item);
+          if (renterId == item.renterId) {
+            amount = amount + (item.amountPaid - item.rentAmount);
+          }
+        });
+      }
     }
-    if (type == "amount-pending") {
-      rentData.map((item) => {
-        if (renterId == item.renterId && !item.isRentPaid) {
-          amount = amount + item.rentAmount;
-        }
-      });
-    }
+
     return amount;
   };
+
+  // const fillRentPaid = () => {
+  //   if (rentData.length > 0) {
+  //     const rentId = "67a0a8294ea4dc4788bdc97f";
+  //     const rentPaidDate = getFirstOfEachMonth(2024, 5);
+  //     console.log("rentPaidDate: ", rentPaidDate);
+  //     const newData = rentPaidDate.map((item) => {
+  //       return {
+  //         amountPaid: 1500,
+  //         amountPaidDate: item,
+  //         rentMonth: `${new Date(item).toLocaleString("en-US", {
+  //           month: "long",
+  //         })} ${new Date(item).getFullYear()}`,
+  //       };
+  //     });
+
+  //     const newRentData = rentData
+  //       .map((item) => {
+  //         if (item.renterId != "67a0a8364ea4dc4788bdc980") return null;
+  //         const date = new Date(item.rentMonth + " 1"); // Append day to create valid Date
+  //         const year = date.getFullYear();
+  //         const month = String(date.getMonth() + 1).padStart(2, "0");
+  //         return {
+  //           ...item,
+  //           amountPaid: 0,
+  //           amountPaidDate: null,
+  //         };
+  //       })
+  //       .filter(Boolean);
+
+  //     console.log("newData: ", newData);
+  //     console.log("newRentData: ", newRentData);
+  //     newRentData.map((item) => {
+  //       // modifyRentData(item);
+  //     });
+  //   }
+  // };
+
+  // const getFirstOfEachMonth = (startYear, startMonth) => {
+  //   const currentDate = new Date();
+  //   const currentYear = currentDate.getFullYear();
+  //   const currentMonth = currentDate.getMonth();
+
+  //   let dates = [];
+
+  //   for (let year = startYear; year <= currentYear; year++) {
+  //     for (
+  //       let month = year === startYear ? startMonth : 0;
+  //       month < 12;
+  //       month++
+  //     ) {
+  //       if (year === currentYear && month > currentMonth) break;
+  //       dates.push(new Date(year, month - 1, 2).toISOString().split("T")[0]);
+  //     }
+  //   }
+
+  //   return dates;
+  // };
+
+  // useEffect(() => {
+  //   fillRentPaid();
+  // }, [rentData]);
+
+  // const updateOneData = () => {
+  //   // 2025-02-24
+  //   if(rentData && rentData.length > 0){
+  //     const current = rentData[rentData.length-1];
+  //     console.log('current: ', current);
+  //     if(current) {
+  //       current.amountPaid = 10000;
+  //       current.amountPaidDate = '2024/02/23';
+  //       console.log('current: ', current);
+  //       modifyRentData(current);
+  //     }
+  //      // modifyRentData(data);
+  //   }
+   
+  // };
+
+  // useEffect(() => {
+  //   // updateOneData();
+  //   // console.log("rentData: ", rentData[rentData.length-1]);
+  //   console.log('rentData: ', rentData);
+  // }, [rentData]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -85,21 +175,31 @@ export default function Rent() {
                 </tr>
               </thead>
 
-              {rentData && (
+              {rentData && rentData.length > 0 && (
                 <tbody>
                   <tr className="bg-gray text-xl">
                     <th className="border">Month</th>
                     <th className="border">Amount</th>
-                    <th className="border">IsPaid</th>
+                    <th className="border">Paid</th>
                   </tr>
                   {rentData.map(
                     (rent) =>
                       rent.renterId == renter._id && (
-                        <tr key={`rent_${rent.rentMonth}`} className="">
+                        <tr key={`rent_${rent.rentMonth}`} className="text-lg">
                           <th className="border">{rent.rentMonth}</th>
                           <td className="border">{rent.rentAmount}</td>
-                          <td className="border">
+                          {/* <td className="border">
                             {rent.isRentPaid ? "Paid" : "Unpaid"}
+                          </td> */}
+                          <td className="border">
+                            <h3>{rent.amountPaid}</h3>
+                            <span
+                              className={`${
+                                rent.amountPaidDate == null && "hidden"
+                              } text-sm`}
+                            >
+                              {rent.amountPaidDate != '' && `(${rent.amountPaidDate})`}
+                            </span>
                           </td>
                         </tr>
                       )
@@ -114,13 +214,13 @@ export default function Rent() {
                   <th></th>
                   <th className="border">
                     Amount Pending:{" "}
-                    {calculateRent(renter._id, "amount-pending")}
+                    {Math.abs(calculateRent(renter._id, "amount-pending"))}
                   </th>
                 </tr>
                 <tr>
                   <th className="bg-gray/30 border" colSpan="3">
                     <form
-                      className="flex justify-evenly item-center py-4"
+                      className="flex flex-col lg:flex-row gap-2 justify-evenly item-center px-2 py-4"
                       action={handleAddRentSubmit}
                     >
                       <input
@@ -143,6 +243,13 @@ export default function Rent() {
                           isRentPaid
                         </label>
                       </div>
+                      <input
+                        className="border border-dark/30 rounded-lg p-2"
+                        type="text"
+                        name="amountPaid"
+                        placeholder="Amount Paid"
+                        required
+                      />
                       <input type="hidden" name="renterId" value={renter._id} />
                       <button
                         type="submit"

@@ -22,10 +22,12 @@ export async function fetchRentData() {
       rentAmount: rent.rentAmount,
       isRentPaid: rent.isRentPaid,
       renterId: rent.renterId.toString(),
-      createdAt: rent.createdAt.toISOString(), // Fix Date
+      amountPaid: rent.amountPaid,
+      amountPaidDate: rent.amountPaidDate,
+      createdAt: rent.createdAt, // Fix Date
     }));
   } catch (error) {
     console.error("Error inserting Renter:", error);
-    return { success: false, message: "Failed to add Renter." };
+    return { success: false, message: "Failed to fetch Renter." };
   }
 }
